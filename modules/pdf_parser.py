@@ -51,7 +51,8 @@ def enhance_content_with_llm(lightweight_content: Dict[str, Any], model_name: st
         llm = ChatOpenAI(
             model_name=model_name,
             temperature=0.2,
-            openai_api_key=api_key
+            openai_api_key=api_key,
+            openai_api_base=os.environ.get("OPENAI_API_BASE")
         )
         
         # Get full text
@@ -196,16 +197,16 @@ def extract_pdf_content(pdf_path, output_dir="output", cleanup_temp=False, enabl
         api_key: OpenAI API key
         
     Returns:
-        tuple: (extracted content, content save file path)
+        tuple: (extracted content, content save file path, images directory path)
     """
     logging.info(f"Starting PDF content extraction: {pdf_path}")
     
     # Call lightweight extractor module functionality
-    lightweight_content, lightweight_content_path = extract_lightweight_content(pdf_path, output_dir, cleanup_temp)
+    lightweight_content, lightweight_content_path, img_dir = extract_lightweight_content(pdf_path, output_dir, cleanup_temp)
     
     if not lightweight_content:
         logging.error("PDF content extraction failed")
-        return None, None
+        return None, None, None
     
     # If LLM enhancement is enabled, perform enhancement processing
     if enable_llm_enhancement:
@@ -218,11 +219,11 @@ def extract_pdf_content(pdf_path, output_dir="output", cleanup_temp=False, enabl
             with open(enhanced_content_path, 'w', encoding='utf-8') as f:
                 json.dump(enhanced_content, f, ensure_ascii=False, indent=2)
             logging.info(f"Enhanced content saved to: {enhanced_content_path}")
-            return enhanced_content, enhanced_content_path
+            return enhanced_content, enhanced_content_path, img_dir
         except Exception as e:
             logging.error(f"Error saving enhanced content: {str(e)}")
             # If save fails, return original content
-            return lightweight_content, lightweight_content_path
+            return lightweight_content, lightweight_content_path, img_dir
     else:
         logging.info(f"PDF content extracted and saved to: {lightweight_content_path}")
-        return lightweight_content, lightweight_content_path
+        return lightweight_content, lightweight_content_path, img_dir

@@ -42,6 +42,7 @@ class LLMInterface:
         """
         self.model_name = model_name
         self.api_key = api_key or os.environ.get("OPENAI_API_KEY")
+        self.base_url = os.environ.get("OPENAI_API_BASE")
         
         if not self.api_key:
             logger.warning("OpenAI API key not provided. LLM functionality will be limited.")
@@ -51,7 +52,8 @@ class LLMInterface:
             self.llm = ChatOpenAI(
                 model_name=self.model_name,
                 temperature=0.1,
-                openai_api_key=self.api_key
+                openai_api_key=self.api_key,
+                openai_api_base=self.base_url
             )
         
         logger.info(f"LLM Interface initialized with model: {self.model_name}")
@@ -108,7 +110,8 @@ class LLMInterface:
                 frequency_penalty=params.get("frequency_penalty", 0.0),
                 presence_penalty=params.get("presence_penalty", 0.0),
                 max_tokens=params.get("max_tokens", 4000),
-                openai_api_key=self.api_key
+                openai_api_key=self.api_key,
+                openai_api_base=self.base_url
             )
             
             # Make the API call

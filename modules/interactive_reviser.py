@@ -44,7 +44,11 @@ Generate a JSON object with a single key, "new_code".
 class EditorAgent:
     def __init__(self, model_name: str):
         # LangChain会自动从环境变量中读取OPENAI_API_KEY和OPENAI_API_BASE
-        self.llm = ChatOpenAI(model=model_name, temperature=0)
+        self.llm = ChatOpenAI(
+            model=model_name, 
+            temperature=0,
+            openai_api_base=os.environ.get("OPENAI_API_BASE")
+        )
         self.history = []
         logger.info(f"EditorAgent initialized with model: {model_name}")
 

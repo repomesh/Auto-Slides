@@ -228,7 +228,7 @@ def extract_lightweight_content(pdf_path, output_dir="output", cleanup_temp=Fals
         cleanup_temp: 是否清理临时文件
         
     Returns:
-        tuple: (提取的内容字典, 保存的文件路径)
+        tuple: (提取的内容字典, 保存的文件路径, 图片目录路径)
     """
     extractor = LightweightExtractor(pdf_path, output_dir)
     content = extractor.extract_content()
@@ -240,6 +240,6 @@ def extract_lightweight_content(pdf_path, output_dir="output", cleanup_temp=Fals
         if cleanup_temp:
             extractor.cleanup_temp_files()
             
-        return content, output_file
+        return content, output_file, extractor.img_dir
     
-    return None, None
+    return None, None, None

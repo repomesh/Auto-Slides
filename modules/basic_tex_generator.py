@@ -26,7 +26,11 @@ class BasicTexGenerator:
         
         # 初始化语言模型
         try:
-            self.llm = ChatOpenAI(model=model_name, temperature=0.1)
+            self.llm = ChatOpenAI(
+                model=model_name, 
+                temperature=0.1,
+                openai_api_base=os.environ.get("OPENAI_API_BASE")
+            )
             self.logger.info(f"已初始化语言模型: {model_name}")
         except Exception as e:
             self.logger.error(f"初始化语言模型失败: {str(e)}")

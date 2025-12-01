@@ -93,7 +93,8 @@ class DirectTexGenerator:
             self.llm = ChatOpenAI(
                 model_name=self.model_name,
                 temperature=self.temperature,
-                openai_api_key=self.api_key
+                openai_api_key=self.api_key,
+                openai_api_base=os.environ.get("OPENAI_API_BASE")
             )
             self.logger.info(f"已初始化语言模型: {self.model_name}")
         except Exception as e:

@@ -1,17 +1,46 @@
 # OpenAI API Configuration (Required)
 OPENAI_API_KEY=your_openai_api_key_here
 
-# Optional: Custom OpenAI API base URL (if using proxy)
+# Optional: Custom OpenAI API base URL (if using proxy or other models)
 # OPENAI_API_BASE=https://api.openai.com/v1
+
+# Optional: Default settings
+# LANGUAGE=en
+# MODEL_NAME=gpt-4o
+
+# ===========================================
+# 多模型支持配置示例
+# ===========================================
+
+# 使用 Qwen 模型 (阿里云通义千问)
+# OPENAI_API_KEY=your_qwen_api_key_here
+# OPENAI_API_BASE=https://dashscope.aliyuncs.com/compatible-mode/v1
+# 运行命令: python main.py paper.pdf --model qwen-plus
+
+# 使用 DeepSeek 模型
+# OPENAI_API_KEY=your_deepseek_api_key_here
+# OPENAI_API_BASE=https://api.deepseek.com/v1
+# 运行命令: python main.py paper.pdf --model deepseek-chat
+
+# 使用 Gemini 模型 (Google)
+# OPENAI_API_KEY=your_gemini_api_key_here
+# OPENAI_API_BASE=https://generativelanguage.googleapis.com/v1beta
+# 运行命令: python main.py paper.pdf --model gemini-pro
+
+# 使用 Claude 模型 (Anthropic)
+# OPENAI_API_KEY=your_claude_api_key_here
+# OPENAI_API_BASE=https://api.anthropic.com/v1
+# 运行命令: python main.py paper.pdf --model claude-3-sonnet
+
+# 使用本地模型 (如 Ollama)
+# OPENAI_API_KEY=ollama
+# OPENAI_API_BASE=http://localhost:11434/v1
+# 运行命令: python main.py paper.pdf --model llama3
 
 # Optional: Proxy settings (uncomment if needed)
 # http_proxy=
 # https_proxy=
 # no_proxy=*
-
-# Optional: Default settings
-# LANGUAGE=en
-# MODEL_NAME=gpt-4o
 
 # Optional: LangSmith for monitoring (uncomment if needed)
 # LANGCHAIN_TRACING_V2="true"

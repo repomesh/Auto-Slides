@@ -68,8 +68,8 @@ def parse_args():
     )
     parser.add_argument(
         '--model', '-m',
-        default='gpt-4o',
-        help='Language model to use'
+        default=os.environ.get('MODEL_NAME', 'gpt-4o'),
+        help='Language model to use (default: from MODEL_NAME env var or gpt-4o)'
     )
     parser.add_argument(
         '--max-retries', '-r',
@@ -286,7 +286,7 @@ def main():
             else:
                 logger.warning("未设置API密钥，将禁用LLM增强功能")
         
-        pdf_content, raw_content_path = extract_pdf_content(
+        pdf_content, raw_content_path, actual_img_dir = extract_pdf_content(
             pdf_path=args.pdf_path, 
             output_dir=raw_dir,
             enable_llm_enhancement=enable_llm_enhancement,
@@ -298,10 +298,11 @@ def main():
             return 1
             
         logger.info(f"PDF内容已保存到: {raw_content_path}")
+        logger.info(f"图片已保存到: {actual_img_dir}")
         
-        # 更新工作流状态
+        # 更新工作流状态 - 使用实际的图片目录
         workflow_state.set_parser_output(raw_content_path)
-        workflow_state.images_dir = img_dir
+        workflow_state.images_dir = actual_img_dir
         
         # 检查是否成功使用了LLM增强
         if pdf_content.get("enhanced_content"):
